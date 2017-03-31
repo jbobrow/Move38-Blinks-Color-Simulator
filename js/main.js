@@ -330,6 +330,7 @@ function initDatGui() {
   var settings = new Settings();
 
   function Settings(){
+    this.color_all = '#ff25ff';  // Nick's favorite color
     this.color_1 = '#ff0000';
     this.color_2 = '#ffff00';
     this.color_3 = '#00ff00';
@@ -340,7 +341,11 @@ function initDatGui() {
 
   var gui = new dat.GUI();
 
-  var f1 = gui.addFolder('colors');
+  var f0 = gui.addFolder('Beginner');
+  var color_all_control = f0.addColor(settings, 'color_all');
+  f0.closed = true;
+
+  var f1 = gui.addFolder('Advanced');
   var color_1_control = f1.addColor(settings, 'color_1');
   var color_2_control = f1.addColor(settings, 'color_2');
   var color_3_control = f1.addColor(settings, 'color_3');
@@ -348,6 +353,18 @@ function initDatGui() {
   var color_5_control = f1.addColor(settings, 'color_5');
   var color_6_control = f1.addColor(settings, 'color_6');
   f1.closed = false;
+
+  color_all_control.onChange(function(value) {
+    // Fires on every change, drag, keypress, etc.
+    var c = hexToRgbA(settings.color_all);
+    colors[0] = c;
+    colors[1] = c;
+    colors[2] = c;
+    colors[3] = c;
+    colors[4] = c;
+    colors[5] = c;
+    initBuffers();  // this seems like a really heavy way to do this, perhaps we just refresh the color part
+  });
 
   color_1_control.onChange(function(value) {
     // Fires on every change, drag, keypress, etc.
