@@ -10,7 +10,7 @@ var colors = [
 ];
 
 var vertexDimLevel = 0.2;
-var faceDimLevel = 0.4;
+var faceDimLevel = 0.6;
 
 function getColorAtVertex(id) {
   var color;
@@ -95,10 +95,23 @@ function getAdditiveColor(colors, percent) {
     a += colors[i].a * percent;
   }
 
-  r = r > 1.0 ? 1.0: r;
-  g = g > 1.0 ? 1.0: g;
-  b = b > 1.0 ? 1.0: b;
-  a = a > 1.0 ? 1.0: a;
+  // if greater than one, find the greatest value and scale all proportionately
+  var maxVal = Math.max(r,g,b,a);
+  var minVal = Math.min(r,g,b,a);
+
+  // TODO: fix this to actually work like light blending, but this does an okay job
+  if(maxVal > 1.0 && (maxVal - minVal) > 2.0) {
+    r = r / maxVal;
+    g = g / maxVal;
+    b = b / maxVal;
+    a = a / maxVal;
+  }
+  else {
+    r = r > 1.0 ? 1.0: r;
+    g = g > 1.0 ? 1.0: g;
+    b = b > 1.0 ? 1.0: b;
+    a = a > 1.0 ? 1.0: a;
+  }
 
   return {r:r, g:g, b:b, a:a};
 }
