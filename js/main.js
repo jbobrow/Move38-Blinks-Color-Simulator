@@ -1,5 +1,27 @@
 var gl;
 
+var points = [
+  {x: 0, y:0},                                               // 0 - center
+  {x: 0, y:1},                                               // 1 - inner ring
+  {x: Math.cos(Math.PI/6), y: Math.sin(Math.PI/6)},          // 2
+  {x: Math.cos(-Math.PI/6), y: Math.sin(-Math.PI/6)},        // 3
+  {x: 0, y:-1},                                              // 4
+  {x: Math.cos(-5*Math.PI/6), y: Math.sin(-5*Math.PI/6)},    // 5
+  {x: Math.cos(5*Math.PI/6), y: Math.sin(5*Math.PI/6)},      // 6
+  {x: 0, y:2*Math.sin(Math.PI/3)},                           // 7 - outer ring
+  {x: 2*Math.cos(Math.PI/3), y:2*Math.sin(Math.PI/3)},       // 8
+  {x: Math.cos(Math.PI/3)+1, y:Math.sin(Math.PI/3)},         // 9
+  {x: 2, y:0},                                               // 10
+  {x: Math.cos(Math.PI/3)+1, y:Math.sin(-Math.PI/3)},        // 11
+  {x: 2*Math.cos(-Math.PI/3), y:2*Math.sin(-Math.PI/3)},     // 12
+  {x: 0, y:2*Math.sin(-Math.PI/3)},                          // 13
+  {x: 2*Math.cos(-2*Math.PI/3), y:2*Math.sin(-2*Math.PI/3)}, // 14
+  {x: Math.cos(-2*Math.PI/3)-1, y:Math.sin(-2*Math.PI/3)},   // 15
+  {x: -2, y:0},                                              // 16
+  {x: Math.cos(2*Math.PI/3)-1, y:Math.sin(2*Math.PI/3)},     // 17
+  {x: 2*Math.cos(2*Math.PI/3), y:2*Math.sin(2*Math.PI/3)}    // 18
+];
+
 function initGL(canvas) {
     try {
         gl = canvas.getContext("experimental-webgl");
@@ -93,12 +115,12 @@ function initBuffers() {
     triangleVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
     var vertices = [
-         0.0,  1.0,  0.0, // start first triangle
-        -1.0, -1.0,  0.0,
-         1.0, -1.0,  0.0,
-         1.0, -1.0,  0.0, // start second triangle
-         0.0,  1.0,  0.0,
-         1.5, -0.0,  0.0,
+        points[0].x,  points[0].y,  0.0, // start first triangle
+        points[1].x,  points[1].y,  0.0,
+        points[2].x,  points[2].y,  0.0,
+        points[2].x,  points[2].y,  0.0, // start second triangle
+        points[1].x,  points[1].y,  0.0,
+        points[8].x,  points[8].y,  0.0,
     ];
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
     triangleVertexPositionBuffer.itemSize = 3;
