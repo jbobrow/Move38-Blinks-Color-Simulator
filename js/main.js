@@ -363,6 +363,7 @@ function initDatGui() {
     colors[3] = c;
     colors[4] = c;
     colors[5] = c;
+    // update dat-gui values...
     initBuffers();  // this seems like a really heavy way to do this, perhaps we just refresh the color part
   });
 
