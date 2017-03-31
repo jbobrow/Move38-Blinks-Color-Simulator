@@ -330,6 +330,30 @@ function webGLStart() {
     initShaders();
     initBuffers();
 
+    // create settings w/ dat.gui
+    var settings = new Settings();
+
+    function Settings(){
+      this.color_1 = '#f02075';
+      this.color_2 = '#f02075';
+      this.color_3 = '#f02075';
+      this.color_4 = '#f02075';
+      this.color_5 = '#f02075';
+      this.color_6 = '#f02075';
+    };
+
+    var gui = new dat.GUI();
+
+    var f1 = gui.addFolder('colors');
+    var color_1_control = f1.addColor(settings, 'color_1');
+    var color_2_control = f1.addColor(settings, 'color_2');
+    var color_3_control = f1.addColor(settings, 'color_3');
+    var color_4_control = f1.addColor(settings, 'color_4');
+    var color_5_control = f1.addColor(settings, 'color_5');
+    var color_6_control = f1.addColor(settings, 'color_6');
+    f1.closed = false;
+
+
     gl.clearColor(1.0, 1.0, 1.0, 1.0);  // set background to white
     gl.enable(gl.DEPTH_TEST);
 
