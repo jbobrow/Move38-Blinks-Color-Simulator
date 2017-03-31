@@ -14,7 +14,7 @@ function getColorAtVertex(id) {
 
   switch(id) {
     case 0:
-      color = getAverageColor(colors);
+      color = getAdditiveColor(colors, 0.6);
       break;
     case 1:
       color = colors[0];
@@ -38,15 +38,66 @@ function getColorAtVertex(id) {
       color = getColorDimmed(colors[0], 0.6);
       break;
     case 8:
-      color = getColorDimmed(getAverageColor([colors[0],colors[1]]), 0.4);
+      color = getAdditiveColor([colors[0],colors[1]], 0.2);
+      break;
+    case 9:
+      color = getColorDimmed(colors[1], 0.6);
+      break;
+    case 10:
+      color = getAdditiveColor([colors[1],colors[2]], 0.2);
+      break;
+    case 11:
+      color = getColorDimmed(colors[2], 0.6);
+      break;
+    case 12:
+      color = getAdditiveColor([colors[2],colors[3]], 0.2);
+      break;
+    case 13:
+      color = getColorDimmed(colors[3], 0.6);
+      break;
+    case 14:
+      color = getAdditiveColor([colors[3],colors[4]], 0.2);
+      break;
+    case 15:
+      color = getColorDimmed(colors[4], 0.6);
+      break;
+    case 16:
+      color = getAdditiveColor([colors[4],colors[5]], 0.2);
+      break;
+    case 17:
+      color = getColorDimmed(colors[5], 0.6);
+      break;
+    case 18:
+      color = getAdditiveColor([colors[5],colors[0]], 0.2);
       break;
   }
-  console.log(color);
+  // console.log(color);
   return color;
 }
 
 function getColorDimmed(color, alpha) {
   return {r:color.r, g:color.g, b:color.b, a:color.a*alpha};
+}
+
+function getAdditiveColor(colors, percent) {
+  var r = 0;
+  var g = 0;
+  var b = 0;
+  var a = 0;
+
+  for(var i=0; i<colors.length; i++) {
+    r += colors[i].r * percent;
+    g += colors[i].g * percent;
+    b += colors[i].b * percent;
+    a += colors[i].a * percent;
+  }
+
+  r = r > 1.0 ? 1.0: r;
+  g = g > 1.0 ? 1.0: g;
+  b = b > 1.0 ? 1.0: b;
+  a = a > 1.0 ? 1.0: a;
+
+  return {r:r, g:g, b:b, a:a};
 }
 
 function getAverageColor(colors) {
