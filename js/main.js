@@ -9,6 +9,9 @@ var colors = [
   {r: 1.0, g: 0.0, b: 1.0, a: 1.0},         // RGB LED 6
 ];
 
+var vertexDimLevel = 0.2;
+var faceDimLevel = 0.4;
+
 function getColorAtVertex(id) {
   var color;
 
@@ -35,40 +38,40 @@ function getColorAtVertex(id) {
       color = colors[5];
       break;
     case 7:
-      color = getColorDimmed(colors[0], 0.6);
+      color = getColorDimmed(colors[0], faceDimLevel);
       break;
     case 8:
-      color = getAdditiveColor([colors[0],colors[1]], 0.2);
+      color = getAdditiveColor([colors[0],colors[1]], vertexDimLevel);
       break;
     case 9:
-      color = getColorDimmed(colors[1], 0.6);
+      color = getColorDimmed(colors[1], faceDimLevel);
       break;
     case 10:
-      color = getAdditiveColor([colors[1],colors[2]], 0.2);
+      color = getAdditiveColor([colors[1],colors[2]], vertexDimLevel);
       break;
     case 11:
-      color = getColorDimmed(colors[2], 0.6);
+      color = getColorDimmed(colors[2], faceDimLevel);
       break;
     case 12:
-      color = getAdditiveColor([colors[2],colors[3]], 0.2);
+      color = getAdditiveColor([colors[2],colors[3]], vertexDimLevel);
       break;
     case 13:
-      color = getColorDimmed(colors[3], 0.6);
+      color = getColorDimmed(colors[3], faceDimLevel);
       break;
     case 14:
-      color = getAdditiveColor([colors[3],colors[4]], 0.2);
+      color = getAdditiveColor([colors[3],colors[4]], vertexDimLevel);
       break;
     case 15:
-      color = getColorDimmed(colors[4], 0.6);
+      color = getColorDimmed(colors[4], faceDimLevel);
       break;
     case 16:
-      color = getAdditiveColor([colors[4],colors[5]], 0.2);
+      color = getAdditiveColor([colors[4],colors[5]], vertexDimLevel);
       break;
     case 17:
-      color = getColorDimmed(colors[5], 0.6);
+      color = getColorDimmed(colors[5], faceDimLevel);
       break;
     case 18:
-      color = getAdditiveColor([colors[5],colors[0]], 0.2);
+      color = getAdditiveColor([colors[5],colors[0]], vertexDimLevel);
       break;
   }
   // console.log(color);
@@ -258,16 +261,30 @@ function initBuffers() {
 
     // vertices order
     var arrayOfIndices =
-    [0, 1,  2,
-     2, 1,  8,
-     8, 1,  7,
-     2, 8,  9,
-     2, 9,  10,
-     2, 10, 3,
-     0, 2,  3,
-     3, 10, 11,
-     3, 11, 12,
-     3, 12, 4];
+    [ 0,  1,  2,
+      2,  1,  8,
+      8,  1,  7,
+      2,  8,  9,
+      2,  9,  10,
+      2,  10, 3,
+      0,  2,  3,
+      3,  10, 11,
+      3,  11, 12,
+      3,  12, 4,
+      4,  12, 13,
+      3,  4,  0,
+      4,  5,  0,
+      4,  14, 5,
+      4,  13, 14,
+      14, 15, 5,
+      15, 16, 5,
+      5,  16,  6,
+      6,  0,  5,
+      6,  16, 17,
+      6,  17, 18,
+      18, 7,  1,
+      1,  6,  18,
+      1,  0,  6];
 
     triangleVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
