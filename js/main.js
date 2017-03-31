@@ -1,5 +1,76 @@
 var gl;
 
+var colors = [
+  {r: 1.0, g: 0.0, b: 0.0, a: 1.0},         // RGB LED 1
+  {r: 1.0, g: 1.0, b: 0.0, a: 1.0},         // RGB LED 2
+  {r: 0.0, g: 1.0, b: 0.0, a: 1.0},         // RGB LED 3
+  {r: 0.0, g: 1.0, b: 1.0, a: 1.0},         // RGB LED 4
+  {r: 0.0, g: 0.0, b: 1.0, a: 1.0},         // RGB LED 5
+  {r: 1.0, g: 0.0, b: 1.0, a: 1.0},         // RGB LED 6
+];
+
+function getColorAtVertex(id) {
+  var color;
+
+  switch(id) {
+    case 0:
+      color = getAverageColor(colors);
+      break;
+    case 1:
+      color = colors[0];
+      break;
+    case 2:
+      color = colors[1];
+      break;
+    case 3:
+      color = colors[2];
+      break;
+    case 4:
+      color = colors[3];
+      break;
+    case 5:
+      color = colors[4];
+      break;
+    case 6:
+      color = colors[5];
+      break;
+    case 7:
+      color = getColorDimmed(colors[0], 0.6);
+      break;
+    case 8:
+      color = getColorDimmed(getAverageColor([colors[0],colors[1]]), 0.4);
+      break;
+  }
+  console.log(color);
+  return color;
+}
+
+function getColorDimmed(color, alpha) {
+  return {r:color.r, g:color.g, b:color.b, a:color.a*alpha};
+}
+
+function getAverageColor(colors) {
+
+  var r = 0;
+  var g = 0;
+  var b = 0;
+  var a = 0;
+
+  for(var i=0; i<colors.length; i++) {
+    r += colors[i].r;
+    g += colors[i].g;
+    b += colors[i].b;
+    a += colors[i].a;
+  }
+
+  r /= colors.length;
+  g /= colors.length;
+  b /= colors.length;
+  a /= colors.length;
+
+  return {r:r, g:g, b:b, a:a};
+}
+
 var points = [
   {x: 0, y:0},                                               // 0 - center
   {x: 0, y:1},                                               // 1 - inner ring
@@ -121,24 +192,30 @@ function initBuffers() {
         points[2].x,  points[2].y,  0.0, // start second triangle
         points[1].x,  points[1].y,  0.0,
         points[8].x,  points[8].y,  0.0,
-    ];
+        points[8].x,  points[8].y,  0.0, // start third triangle
+        points[1].x,  points[1].y,  0.0,
+        points[7].x,  points[7].y,  0.0,
+	];
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
     triangleVertexPositionBuffer.itemSize = 3;
-    triangleVertexPositionBuffer.numItems = 6;
+    triangleVertexPositionBuffer.numItems = 9;
 
     triangleVertexColorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer);
-    var colors = [
-        1.0, 0.0, 0.0, 1.0, // color first triangle
-        0.0, 1.0, 0.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,
-        1.0, 1.0, 0.0, 1.0, // color second triangle
-        0.0, 1.0, 1.0, 1.0,
-        1.0, 0.0, 1.0, 1.0,
+    var vertex_colors = [
+        getColorAtVertex(0).r, getColorAtVertex(0).g, getColorAtVertex(0).b, getColorAtVertex(0).a, // color first triangle
+        getColorAtVertex(1).r, getColorAtVertex(1).g, getColorAtVertex(1).b, getColorAtVertex(1).a,
+        getColorAtVertex(2).r, getColorAtVertex(2).g, getColorAtVertex(2).b, getColorAtVertex(2).a,
+        getColorAtVertex(2).r, getColorAtVertex(2).g, getColorAtVertex(2).b, getColorAtVertex(2).a, // color second triangle
+        getColorAtVertex(1).r, getColorAtVertex(1).g, getColorAtVertex(1).b, getColorAtVertex(1).a,
+        getColorAtVertex(8).r, getColorAtVertex(8).g, getColorAtVertex(8).b, getColorAtVertex(8).a,
+        getColorAtVertex(8).r, getColorAtVertex(8).g, getColorAtVertex(8).b, getColorAtVertex(8).a, // color third triangle
+        getColorAtVertex(1).r, getColorAtVertex(1).g, getColorAtVertex(1).b, getColorAtVertex(1).a,
+        getColorAtVertex(7).r, getColorAtVertex(7).g, getColorAtVertex(7).b, getColorAtVertex(7).a,
     ];
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertex_colors), gl.STATIC_DRAW);
     triangleVertexColorBuffer.itemSize = 4;
-    triangleVertexColorBuffer.numItems = 3;
+    triangleVertexColorBuffer.numItems = 9;
 }
 
 
