@@ -322,40 +322,119 @@ function drawScene() {
     gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
 }
 
+function initDatGui() {
+  // create settings w/ dat.gui
+  var settings = new Settings();
 
+  function Settings(){
+    this.color_1 = '#ff0000';
+    this.color_2 = '#ffff00';
+    this.color_3 = '#00ff00';
+    this.color_4 = '#00ffff';
+    this.color_5 = '#0000ff';
+    this.color_6 = '#ff00ff';
+  };
+
+  var gui = new dat.GUI();
+
+  var f1 = gui.addFolder('colors');
+  var color_1_control = f1.addColor(settings, 'color_1');
+  var color_2_control = f1.addColor(settings, 'color_2');
+  var color_3_control = f1.addColor(settings, 'color_3');
+  var color_4_control = f1.addColor(settings, 'color_4');
+  var color_5_control = f1.addColor(settings, 'color_5');
+  var color_6_control = f1.addColor(settings, 'color_6');
+  f1.closed = false;
+
+  color_1_control.onChange(function(value) {
+    // Fires on every change, drag, keypress, etc.
+    colors[0] = hexToRgbA(settings.color_1);
+    initBuffers();  // this seems like a really heavy way to do this, perhaps we just refresh the color part
+  });
+
+  color_2_control.onChange(function(value) {
+    // Fires on every change, drag, keypress, etc.
+    colors[1] = hexToRgbA(settings.color_2);
+    initBuffers();  // this seems like a really heavy way to do this, perhaps we just refresh the color part
+  });
+
+  color_3_control.onChange(function(value) {
+    // Fires on every change, drag, keypress, etc.
+    colors[2] = hexToRgbA(settings.color_3);
+    initBuffers();  // this seems like a really heavy way to do this, perhaps we just refresh the color part
+  });
+
+  color_4_control.onChange(function(value) {
+    // Fires on every change, drag, keypress, etc.
+    colors[3] = hexToRgbA(settings.color_4);
+    initBuffers();  // this seems like a really heavy way to do this, perhaps we just refresh the color part
+  });
+
+  color_5_control.onChange(function(value) {
+    // Fires on every change, drag, keypress, etc.
+    colors[4] = hexToRgbA(settings.color_5);
+    initBuffers();  // this seems like a really heavy way to do this, perhaps we just refresh the color part
+  });
+
+  color_6_control.onChange(function(value) {
+    // Fires on every change, drag, keypress, etc.
+    colors[5] = hexToRgbA(settings.color_6);
+    initBuffers();  // this seems like a really heavy way to do this, perhaps we just refresh the color part
+  });
+}
+
+var lastTime = 0;
+
+function animate() {
+    // var timeNow = new Date().getTime();
+    // if (lastTime != 0) {
+    //     var elapsed = timeNow - lastTime;
+    //     // do something time based here
+    // }
+    // lastTime = timeNow;
+}
+
+
+function tick() {
+    requestAnimFrame(tick);
+    drawScene();
+    animate();
+}
 
 function webGLStart() {
     var canvas = document.getElementById("lesson02-canvas");
     initGL(canvas);
     initShaders();
     initBuffers();
-
-    // create settings w/ dat.gui
-    var settings = new Settings();
-
-    function Settings(){
-      this.color_1 = '#f02075';
-      this.color_2 = '#f02075';
-      this.color_3 = '#f02075';
-      this.color_4 = '#f02075';
-      this.color_5 = '#f02075';
-      this.color_6 = '#f02075';
-    };
-
-    var gui = new dat.GUI();
-
-    var f1 = gui.addFolder('colors');
-    var color_1_control = f1.addColor(settings, 'color_1');
-    var color_2_control = f1.addColor(settings, 'color_2');
-    var color_3_control = f1.addColor(settings, 'color_3');
-    var color_4_control = f1.addColor(settings, 'color_4');
-    var color_5_control = f1.addColor(settings, 'color_5');
-    var color_6_control = f1.addColor(settings, 'color_6');
-    f1.closed = false;
-
+    initDatGui();
 
     gl.clearColor(1.0, 1.0, 1.0, 1.0);  // set background to white
     gl.enable(gl.DEPTH_TEST);
 
-    drawScene();
+    //drawScene();
+    tick();
 }
+
+
+// Convenience function
+// with the help of: http://stackoverflow.com/questions/21646738/convert-hex-to-rgba
+function hexToRgbA(hex){
+    var c;
+    if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+        c= hex.substring(1).split('');
+        if(c.length== 3){
+            c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+        }
+        c= '0x'+c.join('');
+        //return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',1)';
+        var r = ((c>>16)&255) / 255.0;
+        var g = ((c>>8)&255) / 255.0;
+        var b = (c&255) / 255.0;
+        return {r:r, g:g, b:b, a:1.0}
+    }
+    throw new Error('Bad Hex');
+}
+
+/*  returned value: (String)
+rgba(251,175,255,1)
+*/
