@@ -122,6 +122,27 @@ function getAverageColor(colors) {
   return {r:r, g:g, b:b, a:a};
 }
 
+function getArrayWithColors(ids) {
+  var colorArray = [];
+  for(var i=0; i<ids.length; i++){
+    colorArray.push(getColorAtVertex(ids[i]).r);
+    colorArray.push(getColorAtVertex(ids[i]).g);
+    colorArray.push(getColorAtVertex(ids[i]).b);
+    colorArray.push(getColorAtVertex(ids[i]).a);
+  }
+  return colorArray;
+}
+
+function getArrayWithPoints(ids) {
+  var pointArray = [];
+  for(var i=0; i<ids.length; i++){
+    pointArray.push(points[ids[i]].x);
+    pointArray.push(points[ids[i]].y);
+    pointArray.push(0.0); // z
+  }
+  return pointArray;
+}
+
 var points = [
   {x: 0, y:0},                                               // 0 - center
   {x: 0, y:1},                                               // 1 - inner ring
@@ -236,20 +257,10 @@ var triangleVertexColorBuffer;
 function initBuffers() {
     triangleVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
-    var vertices = [
-        points[0].x,  points[0].y,  0.0, // start first triangle
-        points[1].x,  points[1].y,  0.0,
-        points[2].x,  points[2].y,  0.0,
-        points[2].x,  points[2].y,  0.0, // start second triangle
-        points[1].x,  points[1].y,  0.0,
-        points[8].x,  points[8].y,  0.0,
-        points[8].x,  points[8].y,  0.0, // start third triangle
-        points[1].x,  points[1].y,  0.0,
-        points[7].x,  points[7].y,  0.0,
-	];
+    var vertices = getArrayWithPoints([0,1,2,2,1,8,8,1,7,2,8,9,2,9,10,2,10,3]);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
     triangleVertexPositionBuffer.itemSize = 3;
-    triangleVertexPositionBuffer.numItems = 9;
+    triangleVertexPositionBuffer.numItems = 18;
 
     triangleVertexColorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer);
@@ -263,10 +274,19 @@ function initBuffers() {
         getColorAtVertex(8).r, getColorAtVertex(8).g, getColorAtVertex(8).b, getColorAtVertex(8).a, // color third triangle
         getColorAtVertex(1).r, getColorAtVertex(1).g, getColorAtVertex(1).b, getColorAtVertex(1).a,
         getColorAtVertex(7).r, getColorAtVertex(7).g, getColorAtVertex(7).b, getColorAtVertex(7).a,
+        getColorAtVertex(2).r, getColorAtVertex(2).g, getColorAtVertex(2).b, getColorAtVertex(2).a, // color first triangle
+        getColorAtVertex(8).r, getColorAtVertex(8).g, getColorAtVertex(8).b, getColorAtVertex(8).a,
+        getColorAtVertex(9).r, getColorAtVertex(9).g, getColorAtVertex(9).b, getColorAtVertex(9).a,
+        getColorAtVertex(2).r, getColorAtVertex(2).g, getColorAtVertex(2).b, getColorAtVertex(2).a, // color second triangle
+        getColorAtVertex(9).r, getColorAtVertex(9).g, getColorAtVertex(9).b, getColorAtVertex(9).a,
+        getColorAtVertex(10).r, getColorAtVertex(10).g, getColorAtVertex(10).b, getColorAtVertex(10).a,
+        getColorAtVertex(2).r, getColorAtVertex(2).g, getColorAtVertex(2).b, getColorAtVertex(2).a, // color third triangle
+        getColorAtVertex(10).r, getColorAtVertex(10).g, getColorAtVertex(10).b, getColorAtVertex(10).a,
+        getColorAtVertex(3).r, getColorAtVertex(3).g, getColorAtVertex(3).b, getColorAtVertex(3).a,
     ];
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertex_colors), gl.STATIC_DRAW);
     triangleVertexColorBuffer.itemSize = 4;
-    triangleVertexColorBuffer.numItems = 9;
+    triangleVertexColorBuffer.numItems = 18;
 }
 
 
