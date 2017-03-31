@@ -141,31 +141,34 @@ function getArrayWithPoints(ids) {
   for(var i=0; i<ids.length; i++){
     pointArray.push(points[ids[i]].x);
     pointArray.push(points[ids[i]].y);
-    pointArray.push(0.0); // z
+    pointArray.push(points[ids[i]].z);
   }
   return pointArray;
 }
 
+var centerHeight = 0.5; // center of the Blink
+var innerHeight = 0.3;  // 6 LEDs in the inner ring
+
 var points = [
-  {x: 0, y:0},                                               // 0 - center
-  {x: 0, y:1},                                               // 1 - inner ring
-  {x: Math.cos(Math.PI/6), y: Math.sin(Math.PI/6)},          // 2
-  {x: Math.cos(-Math.PI/6), y: Math.sin(-Math.PI/6)},        // 3
-  {x: 0, y:-1},                                              // 4
-  {x: Math.cos(-5*Math.PI/6), y: Math.sin(-5*Math.PI/6)},    // 5
-  {x: Math.cos(5*Math.PI/6), y: Math.sin(5*Math.PI/6)},      // 6
-  {x: 0, y:2*Math.sin(Math.PI/3)},                           // 7 - outer ring
-  {x: 2*Math.cos(Math.PI/3), y:2*Math.sin(Math.PI/3)},       // 8
-  {x: Math.cos(Math.PI/3)+1, y:Math.sin(Math.PI/3)},         // 9
-  {x: 2, y:0},                                               // 10
-  {x: Math.cos(Math.PI/3)+1, y:Math.sin(-Math.PI/3)},        // 11
-  {x: 2*Math.cos(-Math.PI/3), y:2*Math.sin(-Math.PI/3)},     // 12
-  {x: 0, y:2*Math.sin(-Math.PI/3)},                          // 13
-  {x: 2*Math.cos(-2*Math.PI/3), y:2*Math.sin(-2*Math.PI/3)}, // 14
-  {x: Math.cos(-2*Math.PI/3)-1, y:Math.sin(-2*Math.PI/3)},   // 15
-  {x: -2, y:0},                                              // 16
-  {x: Math.cos(2*Math.PI/3)-1, y:Math.sin(2*Math.PI/3)},     // 17
-  {x: 2*Math.cos(2*Math.PI/3), y:2*Math.sin(2*Math.PI/3)}    // 18
+  {x: 0, y:0, z:centerHeight},                                               // 0 - center
+  {x: 0, y:1, z:innerHeight},                                               // 1 - inner ring
+  {x: Math.cos(Math.PI/6), y: Math.sin(Math.PI/6), z:innerHeight},          // 2
+  {x: Math.cos(-Math.PI/6), y: Math.sin(-Math.PI/6), z:innerHeight},        // 3
+  {x: 0, y:-1, z:innerHeight},                                              // 4
+  {x: Math.cos(-5*Math.PI/6), y: Math.sin(-5*Math.PI/6), z:innerHeight},    // 5
+  {x: Math.cos(5*Math.PI/6), y: Math.sin(5*Math.PI/6), z:innerHeight},      // 6
+  {x: 0, y:2*Math.sin(Math.PI/3), z:0},                                     // 7 - outer ring
+  {x: 2*Math.cos(Math.PI/3), y:2*Math.sin(Math.PI/3), z:0},                 // 8
+  {x: Math.cos(Math.PI/3)+1, y:Math.sin(Math.PI/3), z:0},                   // 9
+  {x: 2, y:0, z:0},                                                         // 10
+  {x: Math.cos(Math.PI/3)+1, y:Math.sin(-Math.PI/3), z:0},                  // 11
+  {x: 2*Math.cos(-Math.PI/3), y:2*Math.sin(-Math.PI/3), z:0},               // 12
+  {x: 0, y:2*Math.sin(-Math.PI/3), z:0},                                    // 13
+  {x: 2*Math.cos(-2*Math.PI/3), y:2*Math.sin(-2*Math.PI/3), z:0},           // 14
+  {x: Math.cos(-2*Math.PI/3)-1, y:Math.sin(-2*Math.PI/3), z:0},             // 15
+  {x: -2, y:0, z:0},                                                        // 16
+  {x: Math.cos(2*Math.PI/3)-1, y:Math.sin(2*Math.PI/3), z:0},               // 17
+  {x: 2*Math.cos(2*Math.PI/3), y:2*Math.sin(2*Math.PI/3), z:0}              // 18
 ];
 
 function initGL(canvas) {
